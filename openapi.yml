@@ -1,0 +1,216 @@
+openapi: 3.0.3
+info:
+  title: Mail definition
+  version: 0.0.1
+paths:
+  '/api/mail/{id}':
+    get:
+      operationId: findById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+        '400':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      operationId: updateBook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mail'
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+        '400':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+    delete:
+      operationId: deleteBook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '400':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+    patch:
+      operationId: patchBook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Mail'
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Mail'
+        '400':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/mail/:
+    get:
+      operationId: findMails
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mail'
+        '400':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+    post:
+      operationId: postBook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mail'
+      responses:
+        '201':
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+        '400':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+    head:
+      operationId: headBook
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mail'
+        '400':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+components:
+  schemas:
+    Mail:
+      required:
+        - issuer
+        - subject
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+        subject:
+          type: string
+        issuer:
+          type: string
+        type:
+          type: string
+          enum: [email, cmail, cmail, pmail]
