@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Mail definition
-  version: 0.0.1
+  version: 0.0.2
 paths:
   '/api/mail/{id}':
     get:
@@ -210,7 +210,26 @@ components:
         subject:
           type: string
         issuer:
-          type: string
+          $ref: '#/components/schemas/Actor'
         type:
           type: string
           enum: [email, cmail, cmail, pmail]
+        actors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Actor'
+    Actor:
+      required:
+        - name
+        - type
+        - state
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [issuer, sender, recipient, validator, signer]
+        state:
+          type: string
