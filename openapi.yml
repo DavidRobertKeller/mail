@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Mail definition
-  version: 0.0.2
+  version: 0.0.3
 paths:
   '/api/mail/{id}':
     get:
@@ -11,8 +11,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           description: default response
@@ -33,7 +32,7 @@ paths:
               schema:
                 type: string
     put:
-      operationId: updateBook
+      operationId: updateMail
       parameters:
         - name: id
           in: path
@@ -65,22 +64,20 @@ paths:
               schema:
                 type: string
     delete:
-      operationId: deleteBook
+      operationId: deleteMail
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           description: default response
           content:
             application/json:
               schema:
-                type: integer
-                format: int64
+                type: string
         '400':
           description: default response
           content:
@@ -94,7 +91,7 @@ paths:
               schema:
                 type: string
     patch:
-      operationId: patchBook
+      operationId: patchMail
       parameters:
         - name: id
           in: path
@@ -125,6 +122,39 @@ paths:
             application/json:
               schema:
                 type: string
+    post:
+      operationId: doActionMail
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MailAction'
+      responses:
+        '201':
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MailAction'
+        '400':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+            
   /api/mail/:
     get:
       operationId: findMails
@@ -150,7 +180,7 @@ paths:
               schema:
                 type: string
     post:
-      operationId: postBook
+      operationId: postMail
       requestBody:
         content:
           application/json:
@@ -176,7 +206,7 @@ paths:
               schema:
                 type: string
     head:
-      operationId: headBook
+      operationId: headMail
       responses:
         '200':
           description: default response
@@ -233,3 +263,14 @@ components:
           enum: [issuer, sender, recipient, validator, signer]
         state:
           type: string
+    MailAction:
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+          enum: [send, validate, sign, refuse, remove, cancel, transfert, forward]
+        data:
+          type: object
+          
