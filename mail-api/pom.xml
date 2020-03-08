@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>mail-api</groupId>
+	<artifactId>mail-api</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+    <properties>
+ 		<java.version>1.8</java.version>
+ 		<spring-boot.version>2.2.4.RELEASE</spring-boot.version>
+ 		<springdoc.version>1.1.49</springdoc.version>
+ 		<jib.version>2.1.0</jib.version>
+    </properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-core</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
+		<!--  patch @see https://github.com/springdoc/springdoc-openapi/issues/133 -->
+		<dependency>
+			<groupId>io.github.classgraph</groupId>
+			<artifactId>classgraph</artifactId>
+			<version>4.8.44</version>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<!-- to be able to run springboot2 app with maven using command: 
+				mvn clean spring-boot:run -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!-- to produce Docker Image localhost : mvn compile jib:dockerBuild remote 
+				repository: mvn jib:build -Dimage=io.oodrive.davidkeller/bookstore/backend -->
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>${jib.version}</version>
+				<configuration>
+					<from>
+						<image>java:8</image>
+					</from>
+					<allowInsecureRegistries>false</allowInsecureRegistries>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
