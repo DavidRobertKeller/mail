@@ -1,4 +1,4 @@
-# mail
+# Definition of Mail
 
 Objectives:
 * provides a definition of Mail in OpenAPI format
