@@ -14,7 +14,7 @@ Bibliography:
 * https://auth0.com/docs/tokens/guides/store-tokens
 * https://ordina-jworks.github.io/security/2019/08/22/Securing-Web-Applications-With-Keycloak.html
 
-To build it:
+Build:
 * mvn clean install
 
 Configure Keycloak:
@@ -24,6 +24,6 @@ Configure Keycloak:
 * create client: mail-app
 * create user: user1
 
-To test it:
+Test:
 * mvn clean spring-boot:run
 * open http://localhost:8080/swagger-ui.html
