@@ -5,6 +5,7 @@ Stack:
 * SpringBoot
 * Keycloak
 * Swagger OpenApi
+* OpenId Connect
 
 
 Bibliography:
