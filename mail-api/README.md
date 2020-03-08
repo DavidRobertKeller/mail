@@ -17,6 +17,13 @@ Bibliography:
 To build it:
 * mvn clean install
 
+Configure Keycloak:
+* start: standalone.bat -Djboss.socket.binding.port-offset=1000
+* create admin accout
+* create realms: mail-realm
+* create client: mail-app
+* create user: user1
+
 To test it:
 * mvn clean spring-boot:run
 * open http://localhost:8080/swagger-ui.html
