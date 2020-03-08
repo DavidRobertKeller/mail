@@ -9,10 +9,12 @@
     <properties>
  		<java.version>1.8</java.version>
  		<spring-boot.version>2.2.4.RELEASE</spring-boot.version>
+ 		<spring-security.version>5.2.2.RELEASE</spring-security.version>
  		<springdoc.version>1.1.49</springdoc.version>
  		<jib.version>2.1.0</jib.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <keycloak.version>9.0.0</keycloak.version>
     </properties>
 
 	<dependencies>
@@ -37,6 +39,45 @@
 			<artifactId>classgraph</artifactId>
 			<version>4.8.44</version>
 		</dependency>
+
+		<!-- keycloak libs -->
+		<dependency>
+		    <groupId>org.keycloak</groupId>
+		    <artifactId>keycloak-spring-boot-starter</artifactId>
+            <version>${keycloak.version}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-spring-boot-2-adapter</artifactId>
+            <version>${keycloak.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>2.10.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+		    <version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-web</artifactId>
+		    <version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-config</artifactId>
+		    <version>${spring-security.version}</version>
+		</dependency>
+		
+		
 	</dependencies>
 
 
