@@ -96,7 +96,7 @@ Resource Server:
 * git clone https://github.com/DavidRobertKeller/mail.git
 * mvn clean install
 * mvn clean spring-boot:run
-
+* open http://localhost:8080/swagger-ui.html
 
 # Bibliography
 
