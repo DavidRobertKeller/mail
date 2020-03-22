@@ -95,9 +95,12 @@ Keycloak:
 * log as admin
 * create realm 'mail'
 * create client 'mail-user'
-* Client Protocol : 'openid-connect'
-* Valid Redirect URIs : '*'
-* Web Origins : '*'
+** Client Protocol : 'openid-connect'
+** Valid Redirect URIs : '*'
+** Web Origins : '*'
+* create client-scope : user
+* add client-scope "user" to client "mail-user" in the default "Assigned Default Client Scope"
+* create role : user
 
 
 Resource Server:
