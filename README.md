@@ -99,8 +99,19 @@ Resource Server:
 
 
 # Bibliography
+
+Standart:
 * SMTP: https://tools.ietf.org/html/rfc5321
 * POP3: https://tools.ietf.org/html/rfc1939
 * IMAP: https://tools.ietf.org/html/rfc3501
 * Certified Mail: https://www.itu.int/rec/T-REC-X.1341/fr
 * Registered Mail: https://www.itu.int/md/T13-SG17-150408-TD-PLEN-1686/fr
+
+Spring and Keycloak:
+* https://stackoverflow.com/questions/50486314/how-to-solve-403-error-in-spring-boot-post-request
+* https://stackoverflow.com/questions/23262168/error-creating-bean-with-name-securityconfig-injection-of-autowired-dependenc
+* https://mkyong.com/spring-boot/spring-rest-spring-security-example/
+* https://www.baeldung.com/spring-security-csrf
+* https://www.baeldung.com/csrf-thymeleaf-with-spring-security
+* https://docs.spring.io/spring-security/site/docs/3.2.0.CI-SNAPSHOT/reference/html/csrf.html
+
