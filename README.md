@@ -108,6 +108,17 @@ Standart:
 * Registered Mail: https://www.itu.int/md/T13-SG17-150408-TD-PLEN-1686/fr
 
 Spring and Keycloak:
+* https://ordina-jworks.github.io/security/2019/08/22/Securing-Web-Applications-With-Keycloak.html
+* https://www.baeldung.com/spring-rest-openapi-documentation
+* https://github.com/eugenp/tutorials/tree/master/spring-boot-modules/spring-boot-springdoc
+* https://github.com/springdoc/springdoc-openapi/issues/133
+* https://github.com/springdoc/springdoc-openapi/issues/275
+* https://github.com/springfox/springfox/issues/1891
+* https://stackoverflow.com/questions/49105290/how-to-get-userinfo-in-springboot-using-keycloak
+* https://logging.apache.org/log4j/2.x/manual/configuration.html
+* https://logging.apache.org/log4j/2.x/manual/markers.html
+
+About CORS :
 * https://stackoverflow.com/questions/50486314/how-to-solve-403-error-in-spring-boot-post-request
 * https://stackoverflow.com/questions/23262168/error-creating-bean-with-name-securityconfig-injection-of-autowired-dependenc
 * https://mkyong.com/spring-boot/spring-rest-spring-security-example/
