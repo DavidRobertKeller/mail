@@ -98,7 +98,7 @@ Resource Server:
 * mvn clean spring-boot:run
 
 
-# Bibliography:
+# Bibliography
 * SMTP: https://tools.ietf.org/html/rfc5321
 * POP3: https://tools.ietf.org/html/rfc1939
 * IMAP: https://tools.ietf.org/html/rfc3501
