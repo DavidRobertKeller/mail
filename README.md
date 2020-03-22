@@ -84,6 +84,18 @@ Attachment:
 * physical items that cannot be digitalized : DVD, Plan, Token, etc
 * physical items that can be digitalized : letter, delivery slip, etc.
 
+# Install and run
+Keycloak:
+* download https://downloads.jboss.org/keycloak/9.0.0/keycloak-9.0.0.zip
+* mkdir D:\application 
+* unzip keycloak-9.0.0.zip
+* cd D:\application\keycloak-9.0.0\bin
+* standalone.sh -Djboss.socket.binding.port-offset=1000
+
+Resource Server:
+* git clone https://github.com/DavidRobertKeller/mail.git
+* mvn clean install
+* mvn clean spring-boot:run
 
 
 Bibliography:
