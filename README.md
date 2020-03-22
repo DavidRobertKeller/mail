@@ -81,8 +81,8 @@ Actions
 * send
 * forward
 Attachment:
-* physical that cannot be digitalized : DVD, Plan, Token, etc
-* physical that can be digitalized : letter, delivery slip, etc.
+* physical items that cannot be digitalized : DVD, Plan, Token, etc
+* physical items that can be digitalized : letter, delivery slip, etc.
 
 
 
