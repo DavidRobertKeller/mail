@@ -91,6 +91,14 @@ Keycloak:
 * unzip keycloak-9.0.0.zip
 * cd D:\application\keycloak-9.0.0\bin
 * standalone.sh -Djboss.socket.binding.port-offset=1000
+* open http://localhost:9080/auth/admin/
+* log as admin
+* create realm 'mail'
+* create client 'mail-user'
+* Client Protocol : 'openid-connect'
+* Valid Redirect URIs : '*'
+* Web Origins : '*'
+
 
 Resource Server:
 * git clone https://github.com/DavidRobertKeller/mail.git
