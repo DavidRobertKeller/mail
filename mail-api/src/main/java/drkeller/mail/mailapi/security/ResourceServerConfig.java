@@ -6,13 +6,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @EnableWebSecurity(debug = true)
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
-
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	http.cors()
-        .and()
+    	
+    	http.cors().and() // ADDED-DKR : disable this line to reproduce the CORS 401
 	        .authorizeRequests()
-	            .mvcMatchers("/api/**").hasAuthority("SCOPE_users")
+	            .mvcMatchers("/api/**").hasAuthority("SCOPE_user")
 	            .mvcMatchers("/swagger-ui.html").anonymous()
 	            .mvcMatchers("/swagger-ui/**").anonymous()
 	            .mvcMatchers("/v3/api-docs/**").anonymous()
