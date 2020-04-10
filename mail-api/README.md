@@ -20,9 +20,9 @@ Build:
 
 Configure Keycloak:
 * start: standalone.bat -Djboss.socket.binding.port-offset=1000
-* create admin accout
-* create realms: mail-realm
-* create client: mail-app
+* create admin account
+* create realms: mail
+* create client: spa-mail-app
 * create user: user1
 
 Test:
