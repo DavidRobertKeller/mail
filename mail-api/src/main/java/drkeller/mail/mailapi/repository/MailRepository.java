@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import drkeller.mail.mailapi.model.Mail;
+import drkeller.mail.mailapi.dto.Mail;
 
 @Repository
 public class MailRepository {

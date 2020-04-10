@@ -6,6 +6,12 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.StandardClaimNames;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,8 +26,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import drkeller.mail.mailapi.dto.Mail;
 import drkeller.mail.mailapi.exception.MailNotFoundException;
-import drkeller.mail.mailapi.model.Mail;
 import drkeller.mail.mailapi.repository.MailRepository;
 
 @CrossOrigin("*")
@@ -40,6 +46,17 @@ public class MailController {
  
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Mail> findMails() {
+    	
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
+    	Jwt jwt = (Jwt) oauthToken.getPrincipal();
+    	System.out.println("username: " + jwt.getClaim(StandardClaimNames.PREFERRED_USERNAME));
+    	
+    	Collection<GrantedAuthority> grantedAuthorities = oauthToken.getAuthorities();
+    	for (GrantedAuthority grantedAuthority : grantedAuthorities) {
+        	System.out.println("grantedAuthority: " + grantedAuthority.getAuthority());
+		}
+    	
         return repository.getMails();
     }
  
