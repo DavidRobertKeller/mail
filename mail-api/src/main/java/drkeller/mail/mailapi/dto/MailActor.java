@@ -1,6 +1,10 @@
 package drkeller.mail.mailapi.dto;
 
+import java.time.LocalDateTime;
+
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class MailActor {
 	
@@ -12,6 +16,12 @@ public class MailActor {
 	private ActorType type;
 
 	private String state;
+
+	@JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	private LocalDateTime creationDate;
+
+	@JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	private LocalDateTime lastModificationDate;
 
 	public void setId(String id) {
 		this.id = id;
@@ -45,4 +55,20 @@ public class MailActor {
 		return state;
 	}
 	
+	public LocalDateTime getCreationDate() {
+		return creationDate;
+	}
+	
+	public void setCreationDate(LocalDateTime creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public LocalDateTime getLastModificationDate() {
+		return lastModificationDate;
+	}
+	
+	public void setLastModificationDate(LocalDateTime lastModificationDate) {
+		this.lastModificationDate = lastModificationDate;
+	}
+
 }

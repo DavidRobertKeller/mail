@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import drkeller.mail.mailapi.dto.Mail;
+import drkeller.mail.mailapi.dto.MailType;
 import drkeller.mail.mailapi.exception.MailNotFoundException;
 import drkeller.mail.mailapi.repository.MailRepository;
 
@@ -75,15 +76,18 @@ public class MailController {
     @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Mail postMail(@NotNull @Valid @RequestBody final Mail mail) {
+    	mail.init();
     	repository.add(mail);
         return mail;
     }
 
-    @RequestMapping(method = RequestMethod.HEAD, value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public Mail headMail() {
-        return new Mail();
-    }
+//    @RequestMapping(method = RequestMethod.HEAD, value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseStatus(HttpStatus.OK)
+//    public Mail headMail() {
+//    	Mail Mail.build("", MailType.EMAIL);
+//    	repository.add(mail);
+//        return ;
+//    }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
