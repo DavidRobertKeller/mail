@@ -1,4 +1,4 @@
-MongoDb and Spring Reactive
+About MongoDb and Spring Reactive
 * https://github.com/spring-projects/spring-data-examples/blob/master/mongodb/reactive/src/test/java/example/springdata/mongodb/people/ReactiveMongoTemplateIntegrationTest.java
 * https://spring.io/blog/2016/11/28/going-reactive-with-spring-data
 * https://github.com/hantsy/spring-reactive-sample/blob/master/mvc-thymeleaf/src/main/java/com/example/demo/MongoConfig.java
