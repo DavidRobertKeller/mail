@@ -1,6 +1,7 @@
 package drkeller.mail.mailapi.controller;
 
 import java.util.Collection;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -22,14 +23,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import drkeller.mail.mailapi.database.DbMail;
+import drkeller.mail.mailapi.database.MailTemplateOperations;
 import drkeller.mail.mailapi.dto.Mail;
-import drkeller.mail.mailapi.dto.MailType;
 import drkeller.mail.mailapi.exception.MailNotFoundException;
 import drkeller.mail.mailapi.repository.MailRepository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @CrossOrigin("*")
 @RestController
@@ -38,7 +41,10 @@ public class MailController {
  
     @Autowired
     private MailRepository repository;
- 
+
+    @Autowired
+    private MailTemplateOperations mailTemplateOperation;
+    
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mail findById(@PathVariable String id) {
         return repository.findById(id)
@@ -57,6 +63,20 @@ public class MailController {
     	for (GrantedAuthority grantedAuthority : grantedAuthorities) {
         	System.out.println("grantedAuthority: " + grantedAuthority.getAuthority());
 		}
+    	
+		Flux<DbMail> flux = mailTemplateOperation.findAll();
+//		find(
+//				Query.query(Criteria.where("subject")
+//						.regex(Pattern.compile(subject, Pattern.CASE_INSENSITIVE))), 
+//				DbMail.class);
+		
+//		Mono<List<Mail>> mails = flux.collectList();
+		List<DbMail> mails = flux.collectList().block();
+		System.out.println("DbMail count: " + mails.size());
+		for (DbMail mail : mails) {
+			System.out.println("mail:" + mail.getId() + "-" + mail.getSubject());
+		}
+
     	
         return repository.getMails();
     }
@@ -78,6 +98,8 @@ public class MailController {
     public Mail postMail(@NotNull @Valid @RequestBody final Mail mail) {
     	mail.init();
     	repository.add(mail);
+    	DbMail m = new DbMail(mail.getSubject());
+    	mailTemplateOperation.save(Mono.just(m)).subscribe();
         return mail;
     }
 
