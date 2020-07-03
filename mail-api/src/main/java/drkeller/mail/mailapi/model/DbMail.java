@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,9 +13,10 @@ import drkeller.mail.mailapi.dto.MailType;
 
 @Document (collection = "mails")
 public class DbMail {
-	@Id
-	private String id;
 
+	@Id
+    private ObjectId _id;
+	
 	@NotNull
 	private String subject;
 
@@ -43,12 +45,12 @@ public class DbMail {
 		this.subject = subject;
 	}
 
-	public String getId() {
-		return id;
+	public ObjectId getId() {
+		return _id;
 	}
-
-	public void setId(String id) {
-		this.id = id;
+	
+	public void setId(ObjectId id) {
+		this._id = id;
 	}
 
 	public String getCreator() {

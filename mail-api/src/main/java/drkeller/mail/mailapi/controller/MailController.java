@@ -2,6 +2,7 @@ package drkeller.mail.mailapi.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -9,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.StandardClaimNames;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import drkeller.mail.mailapi.dto.Mail;
 import drkeller.mail.mailapi.model.DbMail;
+import drkeller.mail.mailapi.model.MailTransformer;
 import drkeller.mail.mailapi.repository.MailTemplateOperations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -44,44 +45,34 @@ public class MailController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mail findById(@PathVariable String id) {
         DbMail dbmail = mailTemplateOperation.findById(id).block();
-    	Mail mail = new Mail();
-		mail.setSubject(dbmail.getSubject());
-	    return mail;
+	    return MailTransformer.buildMail(dbmail);
     }
  
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Mail> findMails() {
-    	
-    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    	JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
-    	Jwt jwt = (Jwt) oauthToken.getPrincipal();
-    	System.out.println("username: " + jwt.getClaim(StandardClaimNames.PREFERRED_USERNAME));
-    	
-    	Collection<GrantedAuthority> grantedAuthorities = oauthToken.getAuthorities();
-    	for (GrantedAuthority grantedAuthority : grantedAuthorities) {
-        	System.out.println("grantedAuthority: " + grantedAuthority.getAuthority());
-		}
-    	
 		Flux<DbMail> flux = mailTemplateOperation.findAll();
-
 		List<DbMail> dbMails = flux.collectList().block();
-		List<Mail> mails = new ArrayList<Mail>();
-		System.out.println("DbMail count: " + dbMails.size());
+		List<Mail> mails = new ArrayList<>();
 		for (DbMail dbmail : dbMails) {
-			System.out.println("mail:" + dbmail.getId() + "-" + dbmail.getSubject());
-			Mail mail = new Mail();
-			mail.setId(dbmail.getId());
-			mail.setSubject(dbmail.getSubject());
-			mail.setCreator(dbmail.getCreator());
-			mail.convertCreationDate(dbmail.getCreationDate());
-			mail.convertLastModificationDate(dbmail.getLastModificationDate());
-			mail.setType(dbmail.getType());
-			mails.add(mail);
+			mails.add(MailTransformer.buildMail(dbmail));
 		}
 
 		return mails;
     }
- 
+
+    public String getUsername() {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	JwtAuthenticationToken oauthToken = (JwtAuthenticationToken) authentication;
+    	Jwt jwt = (Jwt) oauthToken.getPrincipal();
+    	String username = jwt.getClaim(StandardClaimNames.PREFERRED_USERNAME);
+//    	Collection<GrantedAuthority> grantedAuthorities = oauthToken.getAuthorities();
+//    	for (GrantedAuthority grantedAuthority : grantedAuthorities) {
+//        	System.out.println("grantedAuthority: " + grantedAuthority.getAuthority());
+//		}
+
+    	return username;
+    }
+    
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Mail updateMail(@PathVariable("id") final String id, @RequestBody final Mail mail) {
@@ -91,7 +82,11 @@ public class MailController {
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Mail patchMail(@PathVariable("id") final String id, @RequestBody final Mail mail) {
-        return mail;
+    	DbMail dbmail = mailTemplateOperation.findById(id).block();
+    	dbmail.setSubject(mail.getSubject());
+    	dbmail.setLastModificationDate(new Date());
+    	dbmail = mailTemplateOperation.save(Mono.just(dbmail)).block();
+        return MailTransformer.buildMail(dbmail);
     }
     
     @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -99,8 +94,9 @@ public class MailController {
     public Mail postMail(@NotNull @Valid @RequestBody final Mail mail) {
     	DbMail dbmail = new DbMail(mail.getSubject(), mail.getCreator(), mail.getType());
     	dbmail.init();
-    	mailTemplateOperation.save(Mono.just(dbmail)).subscribe();
-        return mail;
+    	dbmail.setCreator(getUsername());
+    	dbmail = mailTemplateOperation.save(Mono.just(dbmail)).block();
+        return MailTransformer.buildMail(dbmail);
     }
 
 
