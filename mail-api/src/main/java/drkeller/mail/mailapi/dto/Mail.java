@@ -1,18 +1,19 @@
 package drkeller.mail.mailapi.dto;
 
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.UUID;
+import java.util.Date;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 public class Mail {
-	DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss.SSSSSS Z");
-
 	private String id;
 
 	@NotNull
 	private String subject;
+
+	private String creator;
 
 	private MailActor issuer;
 
@@ -29,17 +30,9 @@ public class Mail {
 
 	public static Mail build(String subject, MailType type) {
 		Mail mail = new Mail();
-		mail.init();
 		mail.subject = subject;
 		mail.type = type;
 		return mail;
-	}
-
-	public void init() {
-		id = UUID.randomUUID().toString();
-//        creationDate = LocalDateTime.now();
-		creationDate = ZonedDateTime.now();
-		lastModificationDate = creationDate;
 	}
 
 	public String getId() {
@@ -58,6 +51,14 @@ public class Mail {
 		this.subject = subject;
 	}
 
+	public String getCreator() {
+		return creator;
+	}
+	
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+	
 	public MailActor getIssuer() {
 		return issuer;
 	}
@@ -77,6 +78,10 @@ public class Mail {
 	public ZonedDateTime getCreationDate() {
 		return creationDate;
 	}
+	
+	public void convertCreationDate(Date creationDate) {
+		this.creationDate = ZonedDateTime.ofInstant(creationDate.toInstant(), ZoneOffset.UTC);
+	}
 
 	public void setCreationDate(ZonedDateTime creationDate) {
 		this.creationDate = creationDate;
@@ -86,18 +91,12 @@ public class Mail {
 		return lastModificationDate;
 	}
 
+	public void convertLastModificationDate(Date lastModificationDate) {
+		this.lastModificationDate = ZonedDateTime.ofInstant(lastModificationDate.toInstant(), ZoneOffset.UTC);
+	}
+
 	public void setLastModificationDate(ZonedDateTime lastModificationDate) {
 		this.lastModificationDate = lastModificationDate;
 	}
 
-//	@PrePersist
-//	public void prePersist() {
-//		this.creationDate = ZonedDateTime.now();
-//		this.lastModificationDate = ZonedDateTime.now();
-//	}
-//
-//	@PreUpdate
-//	public void preUpdate() {
-//		this.lastModificationDate = ZonedDateTime.now();
-//	}
 }

@@ -1,5 +1,6 @@
 package drkeller.mail.test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -14,7 +15,8 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
 
-import drkeller.mail.mailapi.database.DbMail;
+import drkeller.mail.mailapi.dto.MailType;
+import drkeller.mail.mailapi.model.DbMail;
 import reactor.core.publisher.Flux;
 
 @EnableMongoAuditing
@@ -45,11 +47,11 @@ public class TestCase {
 		template = reactiveMongoTemplate();
 		template.dropCollection(DbMail.class);
 
+		DbMail dbmail1 = new DbMail("subject1", "redactor@test.com", MailType.BMAIL);
+		DbMail dbmail2 = new DbMail("subject2", "redactor@test.com", MailType.BMAIL);
+
 		Flux<DbMail> insertAll = template
-				.insertAll(Flux.just(new DbMail("Walter"), //
-						new DbMail("Skyler"), //
-						new DbMail("Saul"), //
-						new DbMail("Jesse")).collectList());
+				.insertAll(Flux.just(dbmail1, dbmail2).collectList());
 		
 		
 		insertAll.subscribe();
@@ -63,7 +65,6 @@ public class TestCase {
 						.regex(Pattern.compile(subject, Pattern.CASE_INSENSITIVE))), 
 				DbMail.class);
 		
-//		Mono<List<Mail>> mails = flux.collectList();
 		List<DbMail> mails = flux.collectList().block();
 		for (DbMail mail : mails) {
 			System.out.println("mail:" + mail.getId() + "-" + mail.getSubject());

@@ -1,5 +1,6 @@
 package drkeller.mail.mailapi.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.validation.Valid;
@@ -26,11 +27,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import drkeller.mail.mailapi.database.DbMail;
-import drkeller.mail.mailapi.database.MailTemplateOperations;
 import drkeller.mail.mailapi.dto.Mail;
-import drkeller.mail.mailapi.exception.MailNotFoundException;
-import drkeller.mail.mailapi.repository.MailRepository;
+import drkeller.mail.mailapi.model.DbMail;
+import drkeller.mail.mailapi.repository.MailTemplateOperations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -40,15 +39,14 @@ import reactor.core.publisher.Mono;
 public class MailController {
  
     @Autowired
-    private MailRepository repository;
-
-    @Autowired
     private MailTemplateOperations mailTemplateOperation;
     
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mail findById(@PathVariable String id) {
-        return repository.findById(id)
-            .orElseThrow(() -> new MailNotFoundException());
+        DbMail dbmail = mailTemplateOperation.findById(id).block();
+    	Mail mail = new Mail();
+		mail.setSubject(dbmail.getSubject());
+	    return mail;
     }
  
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,20 +63,23 @@ public class MailController {
 		}
     	
 		Flux<DbMail> flux = mailTemplateOperation.findAll();
-//		find(
-//				Query.query(Criteria.where("subject")
-//						.regex(Pattern.compile(subject, Pattern.CASE_INSENSITIVE))), 
-//				DbMail.class);
-		
-//		Mono<List<Mail>> mails = flux.collectList();
-		List<DbMail> mails = flux.collectList().block();
-		System.out.println("DbMail count: " + mails.size());
-		for (DbMail mail : mails) {
-			System.out.println("mail:" + mail.getId() + "-" + mail.getSubject());
+
+		List<DbMail> dbMails = flux.collectList().block();
+		List<Mail> mails = new ArrayList<Mail>();
+		System.out.println("DbMail count: " + dbMails.size());
+		for (DbMail dbmail : dbMails) {
+			System.out.println("mail:" + dbmail.getId() + "-" + dbmail.getSubject());
+			Mail mail = new Mail();
+			mail.setId(dbmail.getId());
+			mail.setSubject(dbmail.getSubject());
+			mail.setCreator(dbmail.getCreator());
+			mail.convertCreationDate(dbmail.getCreationDate());
+			mail.convertLastModificationDate(dbmail.getLastModificationDate());
+			mail.setType(dbmail.getType());
+			mails.add(mail);
 		}
 
-    	
-        return repository.getMails();
+		return mails;
     }
  
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -92,34 +93,22 @@ public class MailController {
     public Mail patchMail(@PathVariable("id") final String id, @RequestBody final Mail mail) {
         return mail;
     }
-
+    
     @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Mail postMail(@NotNull @Valid @RequestBody final Mail mail) {
-    	mail.init();
-    	repository.add(mail);
-    	DbMail m = new DbMail(mail.getSubject());
-    	mailTemplateOperation.save(Mono.just(m)).subscribe();
+    	DbMail dbmail = new DbMail(mail.getSubject(), mail.getCreator(), mail.getType());
+    	dbmail.init();
+    	mailTemplateOperation.save(Mono.just(dbmail)).subscribe();
         return mail;
     }
 
-//    @RequestMapping(method = RequestMethod.HEAD, value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.OK)
-//    public Mail headMail() {
-//    	Mail Mail.build("", MailType.EMAIL);
-//    	repository.add(mail);
-//        return ;
-//    }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public String deleteMail(@PathVariable final String id) {
-    	Mail mail 
-    		= repository.findById(id)
-    			.orElseThrow(() -> new MailNotFoundException());
-    	
-    	repository.getMails().remove(mail);
-    	
+    	Mono<DbMail> m = mailTemplateOperation.findById(id);
+    	mailTemplateOperation.remove(m);
     	return id;
     }
 }
