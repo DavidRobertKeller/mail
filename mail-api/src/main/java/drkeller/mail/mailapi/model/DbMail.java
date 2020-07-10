@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import drkeller.mail.mailapi.dto.MailState;
 import drkeller.mail.mailapi.dto.MailType;
 
 
@@ -30,11 +31,18 @@ public class DbMail {
 	@NotNull
 	private MailType type;
 
-	public DbMail(String subject, String creator, MailType type) {
+	@NotNull
+	private MailState state;
+
+	public DbMail(
+			String subject, 
+			String creator, 
+			MailType type) {
 		init();
 		this.subject = subject;
 		this.creator = creator;
 		this.type = type;
+		this.state = MailState.DRAFT;
 	}
 	
 	public String getSubject() {
@@ -67,6 +75,14 @@ public class DbMail {
 	
 	public void setType(MailType type) {
 		this.type = type;
+	}
+	
+	public MailState getState() {
+		return state;
+	}
+	
+	public void setState(MailState state) {
+		this.state = state;
 	}
 
 	public Date getCreationDate() {

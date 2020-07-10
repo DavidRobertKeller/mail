@@ -3,12 +3,18 @@ package drkeller.mail.mailapi.dto;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 public class Mail {
 	private String id;
+
+	@NotNull
+	private MailType type;
+
+	@NotNull
+	private MailState state;
 
 	@NotNull
 	private String subject;
@@ -17,15 +23,10 @@ public class Mail {
 
 	private MailActor issuer;
 
-	@NotNull
-	private MailType type;
+	private List<MailActor> actors;
 
-//	@JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-//	private LocalDateTime creationDate;
 	private ZonedDateTime creationDate;
 
-//	@JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-//	private LocalDateTime lastModificationDate;
 	private ZonedDateTime lastModificationDate;
 
 	public static Mail build(String subject, MailType type) {
@@ -41,6 +42,22 @@ public class Mail {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public MailType getType() {
+		return type;
+	}
+
+	public void setType(MailType type) {
+		this.type = type;
+	}
+	
+	public MailState getState() {
+		return state;
+	}
+	
+	public void setState(MailState state) {
+		this.state = state;
 	}
 
 	public String getSubject() {
@@ -67,13 +84,6 @@ public class Mail {
 		this.issuer = issuer;
 	}
 
-	public MailType getType() {
-		return type;
-	}
-
-	public void setType(MailType type) {
-		this.type = type;
-	}
 
 	public ZonedDateTime getCreationDate() {
 		return creationDate;

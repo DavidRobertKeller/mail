@@ -12,6 +12,7 @@ public class MailTransformer {
 		mail.convertCreationDate(dbmail.getCreationDate());
 		mail.convertLastModificationDate(dbmail.getLastModificationDate());
 		mail.setType(dbmail.getType());
+		mail.setState(dbmail.getState());
 
 		return mail;
 	}

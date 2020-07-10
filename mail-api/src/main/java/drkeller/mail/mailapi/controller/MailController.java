@@ -84,6 +84,12 @@ public class MailController {
     public Mail patchMail(@PathVariable("id") final String id, @RequestBody final Mail mail) {
     	DbMail dbmail = mailTemplateOperation.findById(id).block();
     	dbmail.setSubject(mail.getSubject());
+    	if (mail.getType() != null) {
+        	dbmail.setType(mail.getType());
+    	}
+    	if (mail.getState() != null) {
+        	dbmail.setState(mail.getState());
+    	}
     	dbmail.setLastModificationDate(new Date());
     	dbmail = mailTemplateOperation.save(Mono.just(dbmail)).block();
         return MailTransformer.buildMail(dbmail);
@@ -95,10 +101,24 @@ public class MailController {
     	DbMail dbmail = new DbMail(mail.getSubject(), mail.getCreator(), mail.getType());
     	dbmail.init();
     	dbmail.setCreator(getUsername());
+    	if (mail.getState() != null) {
+        	dbmail.setState(mail.getState());
+    	}
     	dbmail = mailTemplateOperation.save(Mono.just(dbmail)).block();
         return MailTransformer.buildMail(dbmail);
     }
 
+    @PostMapping(value = "/{id}/actor", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Mail postMailActor(@PathVariable("id") final String id, @RequestBody final Mail mail) {
+    	DbMail dbmail = mailTemplateOperation.findById(id).block();
+//    	dbmail.set
+    	dbmail.setLastModificationDate(new Date());
+    	dbmail = mailTemplateOperation.save(Mono.just(dbmail)).block();
+        return MailTransformer.buildMail(dbmail);
+    }
+
+    
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
