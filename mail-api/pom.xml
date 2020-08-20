@@ -7,15 +7,15 @@
 	<version>0.0.1-SNAPSHOT</version>
 
     <properties>
- 		<java.version>1.8</java.version>
- 		<spring-boot.version>2.2.4.RELEASE</spring-boot.version>
- 		<spring-security.version>5.3.3.RELEASE</spring-security.version>
- 		<springdoc.version>1.1.49</springdoc.version>
+ 		<java.version>14</java.version>
+ 		<spring-boot.version>2.3.3.RELEASE</spring-boot.version>
+ 		<spring-security.version>5.3.4.RELEASE</spring-security.version>
+ 		<springdoc.version>1.4.4</springdoc.version>
+ 		<jackson.version>2.11.2</jackson.version>
  		<jib.version>2.1.0</jib.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <keycloak.version>9.0.0</keycloak.version>
-		<kotlin.version>1.3.72</kotlin.version>
+ 		<lombok.version>1.18.12</lombok.version>
+        <maven.compiler.source>14</maven.compiler.source>
+        <maven.compiler.target>14</maven.compiler.target>
     </properties>
 
 	<dependencies>
@@ -26,36 +26,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-core</artifactId>
+			<artifactId>springdoc-openapi-webflux-ui</artifactId>
 			<version>${springdoc.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>${springdoc.version}</version>
-		</dependency>
-		<!--  patch @see https://github.com/springdoc/springdoc-openapi/issues/133 -->
-		<dependency>
-			<groupId>io.github.classgraph</groupId>
-			<artifactId>classgraph</artifactId>
-			<version>4.8.44</version>
-		</dependency>
-
-		<!-- keycloak libs -->
-<!-- 		<dependency> -->
-<!-- 		    <groupId>org.keycloak</groupId> -->
-<!-- 		    <artifactId>keycloak-spring-boot-starter</artifactId> -->
-<!--             <version>${keycloak.version}</version> -->
-<!-- 		</dependency>		 -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.keycloak</groupId> -->
-<!-- 			<artifactId>keycloak-spring-boot-2-adapter</artifactId> -->
-<!--             <version>${keycloak.version}</version> -->
-<!-- 		</dependency> -->
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-core</artifactId>
-		    <version>2.10.3</version>
+			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -93,17 +70,12 @@
             <version>${spring-boot.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.jetbrains.kotlin</groupId>
-		    <artifactId>kotlin-stdlib</artifactId>
-	        <version>${kotlin.version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.keycloak</groupId>
-		    <artifactId>keycloak-admin-client</artifactId>
-		    <version>10.0.2</version>
-		</dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>${lombok.version}</version>
+		    <scope>provided</scope>
+		</dependency>	
 	</dependencies>
-
 
 	<build>
 		<plugins>
@@ -121,7 +93,7 @@
 				<version>${jib.version}</version>
 				<configuration>
 					<from>
-						<image>java:8</image>
+						<image>java:14</image>
 					</from>
 					<allowInsecureRegistries>false</allowInsecureRegistries>
 				</configuration>
