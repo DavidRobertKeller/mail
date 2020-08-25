@@ -15,6 +15,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.ReactiveGridFsTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -81,4 +82,19 @@ public class MultipartDocumentController {
             .flatMap(gridFsTemplate::getResource)
             .flatMapMany(r -> exchange.getResponse().writeWith(r.getDownloadStream()));
     }
+    
+    
+//    @GetMapping("/")
+//    public Mono<ResponseEntity> getFiles() {
+//    	Query query = new Query();
+//    	this.gridFsTemplate.find(query)
+////    		.flatMap(doc -> { return doc.getId(); }).then()
+//    		.map((id) -> ok().body(Map.of("id", id.toHexString())));
+//    	
+////        return file
+////        	.log()
+////            .flatMap(part -> this.gridFsTemplate.store(part.content(), part.filename()))
+////            .map((id) -> ok().body(Map.of("id", id.toHexString())));
+//    }
+
 }
