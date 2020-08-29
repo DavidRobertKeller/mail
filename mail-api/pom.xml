@@ -84,7 +84,9 @@
 				<version>${jib.version}</version>
 				<configuration>
 					<from>
-						<image>java:14</image>
+<!-- 						<image>localhost:5443/adoptopenjdk/openjdk14</image> -->
+<!-- 						<image>localhost:2376/11ac8589b8dd</image> -->
+						<image>adoptopenjdk</image>
 					</from>
 					<allowInsecureRegistries>false</allowInsecureRegistries>
 				</configuration>
