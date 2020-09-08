@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/mail")
-public class MailReactiveController {
+public class MailController {
 	
     @Autowired
     private MailRepository mailRepository;

@@ -31,7 +31,7 @@ import reactor.core.publisher.Mono;
 @RestController()
 @RequestMapping("/api/mail/document")
 @RequiredArgsConstructor
-public class MultipartDocumentController {
+public class MailDocumentController {
 	
 	@Autowired
 	private final ReactiveGridFsTemplate gridFsTemplate = null;
@@ -100,11 +100,18 @@ public class MultipartDocumentController {
 
     
     @GetMapping("{mailId}")
-    public Flux<Document> getFiles(@PathVariable String mailId) {
-    	return this.gridFsTemplate.find(query(where("mailId").is(mailId)))
+    public Flux<Document> getDocumentMetadataList(@PathVariable String mailId) {
+    	return this.gridFsTemplate.find(query(where("metadata.mailId").is(mailId)))
     	        .log()
                 .map(r -> {
-                	return r.getMetadata();
+                	Document mail = new Document();
+                	mail.put("id", r.getObjectId().toHexString());
+                	mail.put("filename", r.getFilename());
+                	mail.put("length", r.getLength());
+                	mail.put("uploadDate", r.getUploadDate());
+                	mail.put("mailId", mailId);
+                	mail.put("metadata", r.getMetadata());
+                	return mail;
                 });
     	
     }
