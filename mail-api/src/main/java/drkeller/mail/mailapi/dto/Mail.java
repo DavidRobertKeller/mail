@@ -29,6 +29,8 @@ public class Mail {
 
 	private ZonedDateTime lastModificationDate;
 
+	private List<MailDocument> documents;
+	
 	public static Mail build(String subject, MailType type) {
 		Mail mail = new Mail();
 		mail.subject = subject;
@@ -107,6 +109,14 @@ public class Mail {
 
 	public void setLastModificationDate(ZonedDateTime lastModificationDate) {
 		this.lastModificationDate = lastModificationDate;
+	}
+	
+	public List<MailDocument> getDocuments() {
+		return documents;
+	}
+	
+	public void setDocuments(List<MailDocument> documents) {
+		this.documents = documents;
 	}
 
 }

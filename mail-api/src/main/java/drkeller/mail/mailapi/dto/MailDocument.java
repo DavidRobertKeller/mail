@@ -1,21 +1,22 @@
 package drkeller.mail.mailapi.dto;
 
-import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.bson.Document;
 
 public class MailDocument {
+	
 	private String id;
 	private String name;
 	private String reference;
 	private String filename;
+	private long length;
 	private MailDocumentType type;
-	
-	@JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-	private LocalDateTime creationDate;
-
-	@JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-	private LocalDateTime lastModificationDate;
+	private Document metadata;
+	private ZonedDateTime creationDate;
+	private ZonedDateTime lastModificationDate;
 
 	public void setId(String id) {
 		this.id = id;
@@ -57,20 +58,40 @@ public class MailDocument {
 		this.filename = filename;
 	}
 	
-	public LocalDateTime getCreationDate() {
+	public ZonedDateTime getCreationDate() {
 		return creationDate;
 	}
 	
-	public void setCreationDate(LocalDateTime creationDate) {
+	public void setCreationDate(ZonedDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
 
-	public LocalDateTime getLastModificationDate() {
+	public void convertCreationDate(Date creationDate) {
+		this.creationDate = ZonedDateTime.ofInstant(creationDate.toInstant(), ZoneOffset.UTC);
+	}
+
+	public ZonedDateTime getLastModificationDate() {
 		return lastModificationDate;
 	}
 	
-	public void setLastModificationDate(LocalDateTime lastModificationDate) {
+	public void setLastModificationDate(ZonedDateTime lastModificationDate) {
 		this.lastModificationDate = lastModificationDate;
+	}
+	
+	public Document getMetadata() {
+		return metadata;
+	}
+	
+	public void setMetadata(Document metadata) {
+		this.metadata = metadata;
+	}
+	
+	public void setLength(long length) {
+		this.length = length;
+	}
+	
+	public long getLength() {
+		return length;
 	}
 
 }

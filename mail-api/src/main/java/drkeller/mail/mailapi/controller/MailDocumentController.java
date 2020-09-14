@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -84,6 +85,20 @@ public class MailDocumentController {
             });
     }
 
+    @DeleteMapping("{mailId}")
+    public Mono<Void> deleteAll(
+    		@PathVariable String mailId) {
+    	return this.gridFsTemplate.delete((query(where("metadata.mailId").is(mailId))));
+    }
+
+    @DeleteMapping("{mailId}/{id}")
+    public Mono<Void> delete(
+    		@PathVariable String mailId, 
+    		@PathVariable String id) {
+    	return this.gridFsTemplate.delete((query(where("_id").is(id))));
+    }
+
+    
 	@RequestMapping(value = "{mailId}/{id}/metadata", produces = MediaType.APPLICATION_JSON_VALUE, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, method = RequestMethod.POST) 
 //    @PostMapping("{mailId}/{id}/metadata")
     public Mono<Document> setMetaData(
@@ -98,8 +113,7 @@ public class MailDocumentController {
             });
     }
 
-    
-    @GetMapping("{mailId}")
+	@GetMapping("{mailId}")
     public Flux<Document> getDocumentMetadataList(@PathVariable String mailId) {
     	return this.gridFsTemplate.find(query(where("metadata.mailId").is(mailId)))
     	        .log()
@@ -114,6 +128,6 @@ public class MailDocumentController {
                 	return mail;
                 });
     	
-    }
+    }	
 
 }

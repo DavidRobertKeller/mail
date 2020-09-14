@@ -3,6 +3,8 @@ package drkeller.mail.mailapi.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.ReactiveRemoveOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.client.result.DeleteResult;
@@ -27,6 +29,10 @@ public class MailRepository {
 
     public Mono<DbMail> save(Mono<DbMail> mail) {
         return template.save(mail);
+    }
+
+    public Mono<DbMail> removeById(String id) {
+        return template.findAndRemove(Query.query(Criteria.where("_id").is(id)), DbMail.class);
     }
 
     public Mono<DeleteResult> remove(Mono<DbMail> mail) {
