@@ -77,7 +77,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<!-- to produce Docker Image localhost : mvn compile jib:dockerBuild remote 
-				repository: mvn jib:build -Dimage=io.oodrive.davidkeller/bookstore/backend -->
+				repository: mvn jib:build -Dimage=davidkeller/bookstore/backend -->
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
